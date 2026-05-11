@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lumora</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">LUMORA</div>
+
+        <div class="nav-links">
+            <a href="#">Learn</a>
+            <a href="#">Practice</a>
+            <a href="#">Story</a>
+            <a href="#">Community</a>
+        </div>
+
+        <div class="nav-actions">
+            <div class="notification-bell">
+                <i data-lucide="bell"></i>
+                <div class="notif-card">
+                    <h2>NOTIFICATIONS</h2>
+                    <div class="notif-item">
+                        <div class="notif-item-head">
+                            <h5>New lesson unlocked</h5>
+                            <span>Today</span>
+                        </div>
+                        <p>Congratulations! Your scripture learning path just reached a new milestone.</p>
+                    </div>
+                </div>
+            </div>
+            <img src="assets/user-icon.png" alt="User Icon" class="user-icon">
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-left">
+            <div class="verse-box">
+                <i data-lucide="book-open" class="verse-icon"></i>
+                <p id="verse"></p>
+            </div>
+
+            <h1>Let's learn</h1>
+
+            <div class="card-resum">
+                <div class="progress">
+                    progress: <span>20%</span>
+                </div>
+                <p class="progress-name">QUIZ</p>
+                <h2 class="progress-title">Spiritual Insights</h2>
+                <p class="progress-description">Quiz 2: Jerusalem</p>
+                <div class="btn">
+                    <button>Continue</button>
+                    <a href="#">view quiz</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="hero-right">
+            <div class="account">
+                <div class="account-setting">
+                    <div class="account-icon">
+                        <img src="" alt="User gif" class="user-gif">
+                        <button class="account-btn">Edit</button>
+                    </div>
+                    <div class="account-info">
+                        <h4>Tsanta Tsiory</h4>
+                        <p>Level 20</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+
+        <div class="section-title">
+            <h2>A New Learning Experience</h2>
+            <p>
+                Lumora transforms scripture studies into an immersive experience through progression systems,
+                interactive lessons and modern design.
+            </p>
+        </div>
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+                <div class="feature-icon">📖</div>
+                <h3>Interactive Lessons</h3>
+                <p>
+                    Learn through short immersive lessons designed for modern attention spans.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>XP Progression</h3>
+                <p>
+                    Earn experience, level up and unlock new spiritual journeys.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">✨</div>
+                <h3>Modern Experience</h3>
+                <p>
+                    Built with a premium interface inspired by modern educational platforms.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <footer>
+        Lumora © 2026 — Explore beyond reading.
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+    lucide.createIcons();
+</script>
+
+</html>
