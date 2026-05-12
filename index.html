@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8" />
@@ -132,47 +132,124 @@
     </section>
 
     <section class="features">
-
-        <div class="section-title">
-            <h2>A New Learning Experience</h2>
-            <p>
-                Lumora transforms scripture studies into an immersive experience through progression systems,
-                interactive lessons and modern design.
-            </p>
+        <div class="more">
+            <h1>Explore more</h1>
+            <div class="features-cards">
+                <div class="feature-card">
+                    <i data-lucide="book" class="feature-icon"></i>
+                    <h3>Scripture Library</h3>
+                    <p>Access a vast collection of scriptures with interactive annotations and insights.</p>
+                </div>
+                <div class="feature-card">
+                    <i data-lucide="users" class="feature-icon"></i>
+                    <h3>Community Forum</h3>
+                    <p>Join discussions, share insights, and connect with fellow scripture learners worldwide.</p>
+                </div>
+                <div class="feature-card">
+                    <i data-lucide="award" class="feature-icon"></i>
+                    <h3>Achievements</h3>
+                    <p>Earn badges and rewards as you progress through your scripture learning journey.</p>
+                </div>
+                <div class="feature-card">
+                    <i data-lucide="calendar" class="feature-icon"></i>
+                    <h3>Daily Challenges</h3>
+                    <p>Engage in daily scripture-based challenges to test your knowledge and earn rewards.</p>
+                </div>
+            </div>
         </div>
-
-        <div class="feature-grid">
-
-            <div class="feature-card">
-                <div class="feature-icon">📖</div>
-                <h3>Interactive Lessons</h3>
-                <p>
-                    Learn through short immersive lessons designed for modern attention spans.
-                </p>
+        <div class="news">
+            <nav class="title">
+                <h1>New story</h1>
+                <a href="#">See all</a>
+            </nav>
+            <div class="news-cards">
+                <div class="news-card">
+                    <img src="" alt="News image" class="news-img">
+                    <h3>Story Title 1</h3>
+                    <p>A brief description of the story goes here. It provides an overview of the content.</p>
+                </div>
+                <div class="news-card">
+                    <img src="" alt="News image" class="news-img">
+                    <h3>Story Title 2</h3>
+                    <p>A brief description of the story goes here. It provides an overview of the content.</p>
+                </div>
+                <div class="news-card">
+                    <img src="" alt="News image" class="news-img">
+                    <h3>Story Title 3</h3>
+                    <p>A brief description of the story goes here. It provides an overview of the content.</p>
+                </div>
             </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <h3>XP Progression</h3>
-                <p>
-                    Earn experience, level up and unlock new spiritual journeys.
-                </p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">✨</div>
-                <h3>Modern Experience</h3>
-                <p>
-                    Built with a premium interface inspired by modern educational platforms.
-                </p>
-            </div>
-
         </div>
-
     </section>
 
-    <footer>
-        Lumora © 2026 — Explore beyond reading.
+    <section class="invite">
+        <div class="invite-wrapper">
+            <div class="invite-image-wrapper">
+                <div class="invite-image-fallback">
+                    <span>🎮</span>
+                </div>
+            </div>
+            <div class="invite-content">
+                <h2 class="invite-title">Invite a Friend</h2>
+                <p class="invite-desc">
+                    Having fun? Share the love with a friend (or two)!<br />
+                    Enter an email and we'll send them a personal invite ❤️
+                </p>
+                <div class="invite-form">
+                    <input class="email-input" type="email" placeholder="Your friend's email" id="friendEmail" />
+                    <button class="send-btn" onclick="handleInvite()">Send Invite</button>
+                </div>
+                <p class="invite-feedback" id="feedback"></p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+
+            <!-- Logo / Site name -->
+            <div class="footer-brand">
+                <h2>LUMORA</h2>
+                <p><i data-lucide="notebook-pen" class="notebook"></i>Learn the Bible while having fun</p>
+            </div>
+
+            <!-- Quick links -->
+            <div class="footer-links">
+                <h3>Navigation</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Quiz</a></li>
+                    <li><a href="#">Games</a></li>
+                    <li><a href="#">Verses</a></li>
+                </ul>
+            </div>
+
+            <!-- Social media -->
+            <div class="footer-social">
+                <h3>Follow us</h3>
+                <div class="social-icons">
+
+                    <a href="#" target="_blank" class="icon insta">
+                        Instagram
+                    </a>
+
+                    <a href="#" target="_blank" class="icon fb">
+                        Facebook
+                    </a>
+
+                    <a href="#" target="_blank" class="icon wa">
+                        WhatsApp
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer bottom -->
+        <div class="footer-bottom">
+            <p>© 2026 Bible Quiz. All rights reserved.</p>
+        </div>
     </footer>
 
     <script src="script.js"></script>

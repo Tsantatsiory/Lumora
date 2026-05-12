@@ -47,19 +47,19 @@ if (notificationBell && notifCard) {
 }
 
 const verses = [
-  "L'Éternel est mon berger : je ne manquerai de rien. — Psaume 23:1",
+  "The Lord is my shepherd; I shall not want. — Psalm 23:1",
 
-  "Je puis tout par celui qui me fortifie. — Philippiens 4:13",
+  "I can do all things through Christ who strengthens me. — Philippians 4:13",
 
-  "Que votre cœur ne se trouble point. — Jean 14:1",
+  "Let not your heart be troubled. — John 14:1",
 
-  "Ta parole est une lampe à mes pieds. — Psaume 119:105",
+  "Your word is a lamp to my feet and a light to my path. — Psalm 119:105",
 
-  "Demandez, et l’on vous donnera. — Matthieu 7:7",
+  "Ask, and it will be given to you. — Matthew 7:7",
 
-  "Dieu est amour. — 1 Jean 4:8",
+  "God is love. — 1 John 4:8",
 
-  "La vérité vous rendra libres. — Jean 8:32"
+  "The truth will set you free. — John 8:32"
 ];
 
 // Choisir une seule phrase aléatoire au chargement
