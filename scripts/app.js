@@ -36,3 +36,7 @@ if (userMenu && userCard) {
     }
   });
 }
+
+function viewProfile() {
+  window.location.href = 'user/index.html';
+}
