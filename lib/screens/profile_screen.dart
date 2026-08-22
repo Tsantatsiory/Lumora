@@ -441,50 +441,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
       alignment: Alignment.center,
       clipBehavior: Clip.none,
       children: [
-        // Cover Banner Image/Container
+        // Cover Banner Image Container
         Container(
-          height: 140,
+          height: 145,
           margin: const EdgeInsets.symmetric(horizontal: 18),
           decoration: BoxDecoration(
             color: AppColors.chipBg,
             borderRadius: BorderRadius.circular(AppRadius.card),
             border: AppBorders.neo(width: 2.2),
             boxShadow: AppShadows.neo(offset: 3.5),
-            gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                AppColors.lime,
-                AppColors.bg,
-                AppColors.bg,
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(AppRadius.card - 2.2),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Image.asset(
+                  'assets/images/profile_banner.jpg',
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Container(color: AppColors.bannerBg),
+                ),
+                Positioned(
+                  left: 14,
+                  bottom: 14,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppColors.surface,
+                      borderRadius: BorderRadius.circular(6),
+                      border: AppBorders.neo(width: 1.5),
+                      boxShadow: AppShadows.neo(offset: 1.5),
+                    ),
+                    child: Text(
+                      'LUMORA LEARNER',
+                      style: body(9.5, weight: FontWeight.w900, color: AppColors.text),
+                    ),
+                  ),
+                ),
               ],
             ),
-          ),
-          child: Stack(
-            children: [
-              Positioned(
-                right: 16,
-                top: 16,
-                child: Icon(Icons.auto_awesome_rounded, size: 40, color: AppColors.lime.withValues(alpha: 0.3)),
-              ),
-              Positioned(
-                left: 20,
-                bottom: 20,
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: AppColors.surface,
-                        borderRadius: BorderRadius.circular(6),
-                        border: AppBorders.neo(width: 1.5),
-                      ),
-                      child: Text('LUMORA LEARNER', style: body(9.5, weight: FontWeight.w900, color: AppColors.lime2)),
-                    ),
-                  ],
-                ),
-              ),
-            ],
           ),
         ),
 
@@ -492,9 +487,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Positioned(
           bottom: -36,
           child: Container(
-            width: 82,
-            height: 82,
-            padding: const EdgeInsets.all(4),
+            width: 84,
+            height: 84,
+            padding: const EdgeInsets.all(3),
             decoration: BoxDecoration(
               color: AppColors.surface,
               borderRadius: BorderRadius.circular(22),
@@ -502,11 +497,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
               boxShadow: AppShadows.neo(offset: 3.5),
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Container(
-                color: AppColors.bannerBg,
-                alignment: Alignment.center,
-                child: const Text('🧑‍💻', style: TextStyle(fontSize: 40)),
+              borderRadius: BorderRadius.circular(17),
+              child: Image.asset(
+                'assets/images/profile_avatar.jpg',
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Container(
+                  color: AppColors.bannerBg,
+                  alignment: Alignment.center,
+                  child: const Text('🧑‍💻', style: TextStyle(fontSize: 40)),
+                ),
               ),
             ),
           ),

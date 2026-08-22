@@ -501,8 +501,16 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               shape: BoxShape.circle,
               border: AppBorders.neo(width: 1.8),
             ),
-            alignment: Alignment.center,
-            child: Text(user['avatar'] as String, style: const TextStyle(fontSize: 20)),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
+                'assets/images/profile_avatar.jpg',
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Center(
+                  child: Text(user['avatar'] as String, style: const TextStyle(fontSize: 20)),
+                ),
+              ),
+            ),
           ),
           const SizedBox(width: 10),
 
