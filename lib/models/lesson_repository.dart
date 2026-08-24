@@ -1,0 +1,231 @@
+import '../models/lesson_models.dart';
+
+class LessonRepository {
+  static List<Lesson> getAllLessons() {
+    return [
+      // 1. Leçon : Les Miracles & le Ministère de Jésus
+      const Lesson(
+        id: 'jesus_miracles',
+        title: 'The Life of Jesus',
+        subtitle: 'Chapter 4 • Miracles & Ministry',
+        category: 'Gospels',
+        moduleTitle: 'The Gospels & Jesus',
+        xpReward: 30,
+        estimatedMinutes: 3,
+        coverImage: 'assets/images/lesson_miracles.jpg',
+        activities: [
+          FlashcardActivity(
+            id: 'act_1_flashcard',
+            title: 'Key Memory Verse',
+            contextVerse: 'Matthew 14:27',
+            illustrationImage: 'assets/images/lesson_miracles.jpg',
+            frontText: '“Take courage! It is I. Don\'t be afraid.”',
+            backText: 'Jésus rassure les disciples au milieu de la tempête alors qu\'il marche sur les eaux.',
+            note: 'Retenez bien ce verset pour affronter les doutes du quotidien.',
+          ),
+          MultipleChoiceActivity(
+            id: 'act_2_mcq',
+            title: 'Quick Check',
+            contextVerse: 'Matthew 14:28-31',
+            illustrationImage: 'assets/images/lesson_miracles.jpg',
+            question: 'Quel disciple a marché sur l\'eau à la rencontre de Jésus avant de douter ?',
+            options: ['Jean', 'Simon Pierre', 'Jacques', 'André'],
+            correctIndex: 1,
+            explanation: 'Pierre est sorti de la barque et a marché sur l\'eau vers Jésus, puis a crié « Seigneur, sauve-moi ! » quand il a eu peur.',
+          ),
+          FillInBlankActivity(
+            id: 'act_3_fill',
+            title: 'Complete the Verse',
+            contextVerse: 'John 11:25',
+            illustrationImage: 'assets/images/lesson_miracles.jpg',
+            prompt: 'Jésus lui dit : « Je suis la ___ et la vie. Celui qui croit en moi vivra, même s\'il meurt. »',
+            fullText: 'Je suis la résurrection et la vie.',
+            correctWord: 'résurrection',
+            wordBank: ['lumière', 'résurrection', 'paix', 'vérité'],
+            explanation: 'Déclaration solennelle de Jésus à Marthe avant la résurrection de Lazare.',
+          ),
+          TrueFalseActivity(
+            id: 'act_4_tf',
+            title: 'Vérification des Faits',
+            contextVerse: 'Jean 2:1-11',
+            illustrationImage: 'assets/images/lesson_miracles.jpg',
+            statement: 'Le premier miracle public accompli par Jésus a eu lieu aux noces de Cana en Galilée.',
+            isTrue: true,
+            explanation: 'Exact ! Jésus y a changé l’eau en vin excellent, manifestant ainsi sa gloire naissante.',
+          ),
+          OrderSequenceActivity(
+            id: 'act_5_order',
+            title: 'Chronological Order',
+            contextVerse: 'Marc 4:35-41',
+            illustrationImage: 'assets/images/lesson_miracles.jpg',
+            instruction: 'Remettez les étapes de la tempête apaisée dans l\'ordre chronologique :',
+            correctSequence: [
+              'Une violente tempête s\'élève sur le lac.',
+              'Les disciples réveillent Jésus paniqués.',
+              'Jésus menace le vent et dit « Silence, tais-toi ! ».',
+              'Un grand calme s\'établit et la foi des disciples grandit.',
+            ],
+            explanation: 'La confiance en Dieu triomphe de toutes les tempêtes.',
+          ),
+        ],
+      ),
+
+      // 2. Leçon : David & Goliath
+      const Lesson(
+        id: 'david_goliath',
+        title: 'David & Goliath',
+        subtitle: '1 Samuel 17 • Fearless Faith',
+        category: 'Stories',
+        moduleTitle: 'Heroes of the Faith',
+        xpReward: 35,
+        estimatedMinutes: 3,
+        coverImage: 'assets/images/lesson_faith.jpg',
+        activities: [
+          FlashcardActivity(
+            id: 'dg_1_flashcard',
+            title: 'Verset Clé de Foi',
+            contextVerse: '1 Samuel 17:45',
+            illustrationImage: 'assets/images/lesson_faith.jpg',
+            frontText: '« Tu marches contre moi avec l’épée... moi je marche au nom de l’Éternel des armées ! »',
+            backText: 'La victoire de David ne reposait pas sur les armes humaines, mais sur la fidélité de Dieu.',
+            note: 'David face au géant philistin dans la vallée d\'Éla.',
+          ),
+          MultipleChoiceActivity(
+            id: 'dg_2_mcq',
+            title: 'Les Armes de David',
+            contextVerse: '1 Samuel 17:40',
+            illustrationImage: 'assets/images/lesson_faith.jpg',
+            question: 'Combien de pierres polies David a-t-il ramassées dans le ruisseau ?',
+            options: ['1 pierre', '3 pierres', '5 pierres', '7 pierres'],
+            correctIndex: 2,
+            explanation: 'David a choisi 5 pierres polies dans le torrent et a mis une pierre dans sa fronde.',
+          ),
+          TrueFalseActivity(
+            id: 'dg_3_tf',
+            title: 'Le Choix des Armes',
+            contextVerse: '1 Samuel 17:38-39',
+            illustrationImage: 'assets/images/lesson_faith.jpg',
+            statement: 'David a combattu Goliath en portant la lourde armure de bronze et l\'épée du roi Saül.',
+            isTrue: false,
+            explanation: 'Faux ! David a essayé l’armure de Saül mais l’a retirée car il n’était pas habitué. Il est allé avec sa fronde et sa foi.',
+          ),
+          FillInBlankActivity(
+            id: 'dg_4_fill',
+            title: 'Remplir le verset',
+            contextVerse: '1 Samuel 17:47',
+            illustrationImage: 'assets/images/lesson_faith.jpg',
+            prompt: 'Car ce n\'est ni par l\'épée ni par la lance que l\'Éternel sauve : car la ___ appartient à l\'Éternel.',
+            fullText: 'Car la bataille appartient à l\'Éternel.',
+            correctWord: 'bataille',
+            wordBank: ['victoire', 'bataille', 'terre', 'gloire'],
+            explanation: 'Dieu combat pour ceux qui placent leur pleine confiance en Lui.',
+          ),
+        ],
+      ),
+
+      // 3. Leçon : Amour & Pardon
+      const Lesson(
+        id: 'love_forgiveness',
+        title: 'Love & Forgiveness',
+        subtitle: 'Colossians 3 • Christian Living',
+        category: 'Living',
+        moduleTitle: 'Christian Living & Epistles',
+        xpReward: 25,
+        estimatedMinutes: 2,
+        coverImage: 'assets/images/lesson_living.jpg',
+        activities: [
+          FlashcardActivity(
+            id: 'lf_1_flashcard',
+            title: 'Le Pardon Divin',
+            contextVerse: 'Colossiens 3:13',
+            illustrationImage: 'assets/images/lesson_living.jpg',
+            frontText: '« Supportez-vous les uns les autres, et pardonnez-vous réciproquement. »',
+            backText: '« De même que Christ vous a pardonné, vous aussi, pardonnez. »',
+            note: 'Le pardon libère notre cœur et restaure les relations.',
+          ),
+          MultipleChoiceActivity(
+            id: 'lf_2_mcq',
+            title: 'La Fréquence du Pardon',
+            contextVerse: 'Matthieu 18:21-22',
+            illustrationImage: 'assets/images/lesson_living.jpg',
+            question: 'Jusqu\'à combien de fois Jésus demande-t-il à Pierre de pardonner ?',
+            options: ['7 fois', '70 fois 7 fois', '12 fois', '3 fois'],
+            correctIndex: 1,
+            explanation: '« Je ne te dis pas jusqu\'à 7 fois, mais jusqu\'à 70 fois 7 fois » signifie un pardon sans limite mathématique.',
+          ),
+          TrueFalseActivity(
+            id: 'lf_3_tf',
+            title: 'Le Pardon Chrétien',
+            contextVerse: 'Matthieu 6:14',
+            illustrationImage: 'assets/images/lesson_living.jpg',
+            statement: 'Pardonner aux autres est une condition pour recevoir soi-même le pardon de notre Père céleste.',
+            isTrue: true,
+            explanation: 'Vrai ! « Si vous pardonnez aux hommes leurs offenses, votre Père céleste vous pardonnera aussi. »',
+          ),
+          FillInBlankActivity(
+            id: 'lf_4_fill',
+            title: 'Verset à compléter',
+            contextVerse: '1 Jean 4:19',
+            illustrationImage: 'assets/images/lesson_living.jpg',
+            prompt: 'Pour nous, nous l\'aimons, parce qu\'il nous a ___ le premier.',
+            fullText: 'Parce qu\'il nous a aimés le premier.',
+            correctWord: 'aimés',
+            wordBank: ['choisis', 'aimés', 'pardonnés', 'sauvés'],
+            explanation: 'L\'amour de Dieu est la source première de notre capacité d\'aimer.',
+          ),
+        ],
+      ),
+
+      // 4. Leçon : L'Armure de Dieu
+      const Lesson(
+        id: 'armor_of_god',
+        title: 'The Armor of God',
+        subtitle: 'Ephesians 6 • Spiritual Battle',
+        category: 'Epistles',
+        moduleTitle: 'Christian Living & Epistles',
+        xpReward: 30,
+        estimatedMinutes: 3,
+        coverImage: 'assets/images/lesson_armor.jpg',
+        activities: [
+          TrueFalseActivity(
+            id: 'ag_1_tf',
+            title: 'Le Bouclier de la Foi',
+            contextVerse: 'Éphésiens 6:16',
+            illustrationImage: 'assets/images/lesson_armor.jpg',
+            statement: 'Le casque représente la vérité tandis que le bouclier représente la justice.',
+            isTrue: false,
+            explanation: 'Faux ! Le casque représente le Salut, la ceinture la Vérité, et le bouclier la Foi.',
+          ),
+          MultipleChoiceActivity(
+            id: 'ag_2_mcq',
+            title: 'L\'Arme Offensive',
+            contextVerse: 'Éphésiens 6:17',
+            illustrationImage: 'assets/images/lesson_armor.jpg',
+            question: 'Quelle est la seule arme offensive mentionnée dans l\'armure de Dieu ?',
+            options: ['La lance', 'L\'Épée de l\'Esprit (La Parole)', 'L\'arc et les flèches', 'Le char de guerre'],
+            correctIndex: 1,
+            explanation: 'L\'Épée de l\'Esprit représente la Parole vivante de Dieu prononcée avec foi.',
+          ),
+          FillInBlankActivity(
+            id: 'ag_3_fill',
+            title: 'Le Bouclier protecteur',
+            contextVerse: 'Éphésiens 6:16',
+            illustrationImage: 'assets/images/lesson_armor.jpg',
+            prompt: 'Prenez par-dessus tout cela le bouclier de la ___, avec lequel vous pourrez éteindre tous les traits enflammés.',
+            fullText: 'Le bouclier de la foi.',
+            correctWord: 'foi',
+            wordBank: ['prière', 'foi', 'paix', 'sagesse'],
+            explanation: 'La foi inébranlable nous protège des doutes et attaques spirituelles.',
+          ),
+        ],
+      ),
+    ];
+  }
+
+  static Lesson getLessonById(String id) {
+    return getAllLessons().firstWhere(
+      (l) => l.id == id,
+      orElse: () => getAllLessons().first,
+    );
+  }
+}

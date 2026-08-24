@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import '../services/auth_service.dart';
 import '../theme.dart';
 import '../widgets/lumora_bottom_nav.dart';
 import '../widgets/lumora_toast.dart';
+import 'auth_screen.dart';
+import 'friends_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   final VoidCallback? onBack;
@@ -16,6 +19,26 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   int selectedTab = 0; // 0 = Badges, 1 = Activity, 2 = Saved
   int navIndex = 3; // Profile tab
+  int? openFriendsTab; // 0: Followers, 1: Following
+  bool showAuthModal = false;
+
+  final AuthService _auth = AuthService.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _auth.addListener(_onAuthChanged);
+  }
+
+  @override
+  void dispose() {
+    _auth.removeListener(_onAuthChanged);
+    super.dispose();
+  }
+
+  void _onAuthChanged() {
+    if (mounted) setState(() {});
+  }
 
   static const _tabs = ['Badges', 'Activity', 'Saved Verses'];
 
@@ -127,6 +150,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (showAuthModal) {
+      return AuthScreen(
+        onAuthSuccess: () => setState(() => showAuthModal = false),
+      );
+    }
+
+    if (openFriendsTab != null) {
+      return FriendsScreen(
+        initialTabIndex: openFriendsTab!,
+        onBack: () => setState(() => openFriendsTab = null),
+      );
+    }
+
+    final user = _auth.currentUser;
     final width = MediaQuery.of(context).size.width;
     final isWide = width >= 900;
 
@@ -164,8 +201,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       if (widget.onBack != null) const SizedBox(width: 10),
                       Expanded(
                         child: Text(
-                          '@tsanta_tsiory',
-                          style: heading(15, weight: FontWeight.w900, color: AppColors.text),
+                          '${user.username} • Level ${user.level} Seeker',
+                          style: heading(14, weight: FontWeight.w900, color: AppColors.text),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -173,13 +210,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Row(
                         children: [
                           _IconButton(
-                            icon: Icons.share_outlined,
-                            onTap: () => showLumoraToast(context, 'Profile link copied!'),
+                            icon: Icons.logout_rounded,
+                            onTap: () => setState(() => showAuthModal = true),
                           ),
                           const SizedBox(width: 8),
                           _IconButton(
-                            icon: Icons.settings_outlined,
-                            onTap: () => showLumoraToast(context, 'Settings opened'),
+                            icon: Icons.share_outlined,
+                            onTap: () => showLumoraToast(context, 'Lien de profil copié ! 📋'),
                           ),
                         ],
                       ),
@@ -194,7 +231,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Cover Banner with Avatar Overlap (matching reference)
+                        // Cover Banner with Avatar Overlap
                         _buildCoverWithAvatar(),
                         const SizedBox(height: 14),
 
@@ -207,7 +244,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text('Tsanta Tsiory', style: heading(22, weight: FontWeight.w900)),
+                                  Text(user.displayName, style: heading(22, weight: FontWeight.w900)),
                                   const SizedBox(width: 8),
                                   Container(
                                     padding: const EdgeInsets.all(3),
@@ -227,7 +264,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   InkWell(
-                                    onTap: () => showLumoraToast(context, 'Followers list coming soon'),
+                                    onTap: () => setState(() => openFriendsTab = 0),
                                     borderRadius: BorderRadius.circular(20),
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
@@ -240,7 +277,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Text('142', style: heading(12.5, weight: FontWeight.w900)),
+                                          Text('${user.followersCount}', style: heading(12.5, weight: FontWeight.w900)),
                                           const SizedBox(width: 4),
                                           Text('Followers',
                                               style: body(11, color: AppColors.muted, weight: FontWeight.w700)),
@@ -250,7 +287,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                   const SizedBox(width: 8),
                                   InkWell(
-                                    onTap: () => showLumoraToast(context, 'Following list coming soon'),
+                                    onTap: () => setState(() => openFriendsTab = 1),
                                     borderRadius: BorderRadius.circular(20),
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
@@ -263,7 +300,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Text('86', style: heading(12.5, weight: FontWeight.w900)),
+                                          Text('${user.followingCount}', style: heading(12.5, weight: FontWeight.w900)),
                                           const SizedBox(width: 4),
                                           Text('Following',
                                               style: body(11, color: AppColors.muted, weight: FontWeight.w700)),
@@ -284,21 +321,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   border: Border.all(color: AppColors.line),
                                 ),
                                 child: Text(
-                                  '“Your word is a lamp to my feet and a light to my path.” — Psalm 119:105',
+                                  user.bio,
                                   style: body(11.5, color: AppColors.text, height: 1.4),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
                               const SizedBox(height: 18),
 
-                              // 3 Key Stats Boxes (matching the 3 boxes from the photo)
+                              // 3 Key Stats Boxes
                               Row(
                                 children: [
-                                  _buildStatBox('2,480', 'Total XP', Icons.bolt_rounded, AppColors.lime),
+                                  _buildStatBox('${user.totalXp}', 'Total XP', Icons.bolt_rounded, AppColors.lime),
                                   const SizedBox(width: 10),
-                                  _buildStatBox('35', 'Day Streak', Icons.local_fire_department_rounded, AppColors.amber),
+                                  _buildStatBox('${user.streakDays}', 'Day Streak', Icons.local_fire_department_rounded, AppColors.amber),
                                   const SizedBox(width: 10),
-                                  _buildStatBox('12', 'Badges', Icons.military_tech_rounded, AppColors.amber),
+                                  _buildStatBox('${user.badgesCount}', 'Badges', Icons.military_tech_rounded, AppColors.amber),
                                 ],
                               ),
                               const SizedBox(height: 16),

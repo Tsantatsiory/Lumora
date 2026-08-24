@@ -7,9 +7,11 @@ import '../widgets/daily_challenge_card.dart';
 import '../widgets/lumora_bottom_nav.dart';
 import '../widgets/category_tile.dart';
 import '../widgets/lumora_toast.dart';
+import '../services/auth_service.dart';
 import 'profile_screen.dart';
 import 'leaderboard_screen.dart';
 import 'learn_screen.dart';
+import 'notifications_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,13 +22,27 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int navIndex = 0;
-  int xp = 680;
+  bool isShowingNotifications = false;
   bool dailyClaimed = false;
   final int xpGoal = 1000;
-  final int level = 8;
-  final int streak = 35;
-  final int totalXp = 2480;
-  final int badges = 12;
+
+  final AuthService _auth = AuthService.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _auth.addListener(_onAuthUpdate);
+  }
+
+  @override
+  void dispose() {
+    _auth.removeListener(_onAuthUpdate);
+    super.dispose();
+  }
+
+  void _onAuthUpdate() {
+    if (mounted) setState(() {});
+  }
 
   void _claimXp() {
     if (dailyClaimed) {
@@ -34,14 +50,26 @@ class _HomeScreenState extends State<HomeScreen> {
       return;
     }
     setState(() {
-      xp += 10;
       dailyClaimed = true;
     });
+    _auth.addXp(10);
     showLumoraToast(context, '+10 XP added! Keep going 🔥');
   }
 
   @override
   Widget build(BuildContext context) {
+    if (isShowingNotifications) {
+      return NotificationsScreen(
+        onBack: () => setState(() => isShowingNotifications = false),
+        onNavigateToTab: (index) {
+          setState(() {
+            isShowingNotifications = false;
+            navIndex = index;
+          });
+        },
+      );
+    }
+
     if (navIndex == 3) {
       return ProfileScreen(
         onBack: () => setState(() => navIndex = 0),
@@ -63,6 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
+    final user = _auth.currentUser;
     final width = MediaQuery.of(context).size.width;
     final isWide = width >= 900;
 
@@ -76,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               children: [
                 _TopBar(
-                  onBell: () => showLumoraToast(context, 'No new notifications'),
+                  onBell: () => setState(() => isShowingNotifications = true),
                   onProfile: () => setState(() => navIndex = 3),
                 ),
                 Expanded(
@@ -94,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text('Welcome back, Tsanta 👋',
+                              Text('Welcome back, ${user.displayName.split(' ').first} 👋',
                                   style: body(13, color: AppColors.muted, weight: FontWeight.w600)),
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
@@ -109,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     const Icon(Icons.wb_sunny_rounded, size: 13, color: AppColors.text),
                                     const SizedBox(width: 4),
-                                    Text('Day 35',
+                                    Text('Day ${user.streakDays}',
                                         style: body(10.5, color: AppColors.text, weight: FontWeight.w900)),
                                   ],
                                 ),
@@ -120,13 +149,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
                           // 1. StatsCard Section
                           StatsCard(
-                            xp: xp,
+                            xp: user.weeklyXp,
                             xpGoal: xpGoal,
-                            level: level,
-                            streak: streak,
-                            totalXp: totalXp,
-                            badges: badges,
-                            onViewAll: () => showLumoraToast(context, 'Full statistics opened'),
+                            level: user.level,
+                            streak: user.streakDays,
+                            totalXp: user.totalXp,
+                            badges: user.badgesCount,
+                            onViewAll: () => setState(() => navIndex = 3),
                           ),
                           const SizedBox(height: 24),
 
@@ -134,13 +163,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           _SectionHeader(
                             title: 'Your Streak',
                             trailing: Text(
-                              '$streak days 🔥',
+                              '${user.streakDays} days 🔥',
                               style: body(12, color: AppColors.amber, weight: FontWeight.w900),
                             ),
                           ),
                           const SizedBox(height: 12),
                           StreakCard(
-                            streak: streak,
+                            streak: user.streakDays,
                             currentDayIndex: 4,
                             done: const [true, true, true, true, false, false, false],
                           ),
@@ -172,7 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 trailingText: '+30 XP',
                                 progress: 0.65,
                                 headerColor: AppColors.chipBg,
-                                onTap: () => showLumoraToast(context, 'The Life of Jesus opened'),
+                                onTap: () => setState(() => navIndex = 1),
                               ),
                               LessonCard(
                                 icon: Icons.water_drop_rounded,
@@ -182,7 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 stickerTag: '🔥',
                                 trailingText: '+50 XP',
                                 headerColor: AppColors.bg,
-                                onTap: () => showLumoraToast(context, 'Walk on Water quest opened'),
+                                onTap: () => setState(() => navIndex = 1),
                               ),
                               LessonCard(
                                 icon: Icons.favorite_rounded,
@@ -193,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 trailingText: '+25 XP',
                                 progress: 0.3,
                                 headerColor: AppColors.lime,
-                                onTap: () => showLumoraToast(context, 'Love & Forgiveness opened'),
+                                onTap: () => setState(() => navIndex = 1),
                               ),
                               LessonCard(
                                 icon: Icons.shield_rounded,
@@ -203,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 stickerTag: 'NEW',
                                 trailingText: '+35 XP',
                                 headerColor: AppColors.bannerBg,
-                                onTap: () => showLumoraToast(context, 'David & Goliath opened'),
+                                onTap: () => setState(() => navIndex = 1),
                               ),
                             ],
                           ),
@@ -215,7 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           DailyChallengeCard(
                             title: 'Who walked on water with Jesus?',
                             description: 'Test your knowledge with a quick 5-question Bible challenge.',
-                            onStart: () => showLumoraToast(context, 'Challenge started — good luck!'),
+                            onStart: () => setState(() => navIndex = 1),
                           ),
                           const SizedBox(height: 24),
 
@@ -224,7 +253,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             title: 'Explore the Bible',
                             trailing: _SeeAll(
                               text: 'View all',
-                              onTap: () => showLumoraToast(context, 'Library opened'),
+                              onTap: () => setState(() => navIndex = 1),
                             ),
                           ),
                           const SizedBox(height: 12),
@@ -235,7 +264,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   icon: Icons.auto_awesome_rounded,
                                   title: 'Stories',
                                   subtitle: '28 lessons',
-                                  onTap: () => showLumoraToast(context, 'Stories selected'),
+                                  onTap: () => setState(() => navIndex = 1),
                                 ),
                               ),
                               const SizedBox(width: 10),
@@ -244,23 +273,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                   icon: Icons.chat_bubble_outline_rounded,
                                   title: 'Teachings',
                                   subtitle: '16 lessons',
-                                  onTap: () => showLumoraToast(context, 'Teachings selected'),
+                                  onTap: () => setState(() => navIndex = 1),
                                 ),
                               ),
                               const SizedBox(width: 10),
                               Expanded(
                                 child: CategoryTile(
-                                  icon: Icons.people_alt_outlined,
-                                  title: 'People',
-                                  subtitle: '34 lessons',
-                                  onTap: () => showLumoraToast(context, 'Characters selected'),
+                                  icon: Icons.history_edu_rounded,
+                                  title: 'History',
+                                  subtitle: '12 lessons',
+                                  onTap: () => setState(() => navIndex = 1),
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 24),
 
-                          // Quick actions (Claim XP & Leaderboard)
+                          // Quick Action Cards
                           Row(
                             children: [
                               Expanded(
@@ -353,8 +382,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   currentIndex: navIndex,
                   onTap: (i) {
                     setState(() => navIndex = i);
-                    const labels = ['Home', 'Learn', 'Rank', 'Profile'];
-                    showLumoraToast(context, '${labels[i]} selected');
                   },
                 ),
               ],

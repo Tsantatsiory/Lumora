@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'theme.dart';
 import 'screens/home_screen.dart';
 
-void main() {
+import 'services/firebase_initializer.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FirebaseInitializer.initialize();
   runApp(const LumoraApp());
 }
 

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import '../models/lesson_models.dart';
+import '../models/lesson_repository.dart';
 import '../theme.dart';
 import '../widgets/lesson_card.dart';
 import '../widgets/lumora_bottom_nav.dart';
 import '../widgets/lumora_toast.dart';
+import 'lesson_session_screen.dart';
 
 class LearnScreen extends StatefulWidget {
   final VoidCallback? onBack;
@@ -17,6 +20,7 @@ class LearnScreen extends StatefulWidget {
 class _LearnScreenState extends State<LearnScreen> {
   int selectedFilter = 0;
   int navIndex = 1; // Learn tab
+  Lesson? activeSessionLesson;
 
   static const _filters = ['All', 'Gospels', 'Wisdom', 'Stories', 'Living', 'Epistles'];
 
@@ -160,8 +164,27 @@ class _LearnScreenState extends State<LearnScreen> {
     },
   ];
 
+  void _startLesson(String lessonId) {
+    final lesson = LessonRepository.getLessonById(lessonId);
+    setState(() {
+      activeSessionLesson = lesson;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (activeSessionLesson != null) {
+      return LessonSessionScreen(
+        lesson: activeSessionLesson!,
+        onFinished: () {
+          setState(() {
+            activeSessionLesson = null;
+          });
+          showLumoraToast(context, 'Progression enregistrée ! +XP ajouté 🔥');
+        },
+      );
+    }
+
     final width = MediaQuery.of(context).size.width;
     final isWide = width >= 900;
 
@@ -314,6 +337,16 @@ class _LearnScreenState extends State<LearnScreen> {
                             itemCount: filteredLessons.length,
                             itemBuilder: (context, i) {
                               final lesson = filteredLessons[i];
+                              final lessonId = i == 0
+                                  ? 'jesus_miracles'
+                                  : (lesson['title'] == 'David & Goliath'
+                                      ? 'david_goliath'
+                                      : (lesson['title'] == 'Love & Forgiveness'
+                                          ? 'love_forgiveness'
+                                          : (lesson['title'] == 'The Armor of God'
+                                              ? 'armor_of_god'
+                                              : 'jesus_miracles')));
+
                               return LessonCard(
                                 icon: lesson['icon'] as IconData,
                                 title: lesson['title'] as String,
@@ -323,10 +356,7 @@ class _LearnScreenState extends State<LearnScreen> {
                                 trailingText: lesson['xp'] as String,
                                 progress: lesson['progress'] as double?,
                                 headerColor: AppColors.chipBg,
-                                onTap: () => showLumoraToast(
-                                  context,
-                                  '${lesson['title']} opened',
-                                ),
+                                onTap: () => _startLesson(lessonId),
                               );
                             },
                           ),
@@ -450,7 +480,7 @@ class _LearnScreenState extends State<LearnScreen> {
 
           // CTA Button
           InkWell(
-            onTap: () => showLumoraToast(context, 'Resuming Chapter 4: Life of Jesus ▶'),
+            onTap: () => _startLesson('jesus_miracles'),
             borderRadius: BorderRadius.circular(AppRadius.button),
             child: Container(
               width: double.infinity,
