@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import '../models/firestore/user_profile_model.dart';
+import 'firebase_initializer.dart';
 import 'user_service.dart';
 
 class AuthService extends ChangeNotifier {
@@ -123,9 +124,9 @@ class AuthService extends ChangeNotifier {
     );
     notifyListeners();
 
-    try {
-      _userService.addXp(_currentUser!.uid, xpGained);
-    } catch (_) {}
+    if (FirebaseInitializer.isInitialized) {
+      _userService.addXp(_currentUser!.uid, xpGained).catchError((_) {});
+    }
   }
 
   // Incrémenter / Décrémenter les followers / following
@@ -156,15 +157,15 @@ class AuthService extends ChangeNotifier {
     );
     notifyListeners();
 
-    try {
+    if (FirebaseInitializer.isInitialized) {
       _userService.updateProfileDetails(
         _currentUser!.uid,
         displayName: displayName,
         bio: bio,
         avatarUrl: avatarUrl,
         bannerUrl: bannerUrl,
-      );
-    } catch (_) {}
+      ).catchError((_) {});
+    }
   }
 }
 

@@ -51,12 +51,9 @@ class _OrderSequenceViewState extends State<OrderSequenceView> {
     widget.onSequenceChanged(currentItems);
   }
 
-  void _onReorder(int oldIndex, int newIndex) {
+  void _onReorderItem(int oldIndex, int newIndex) {
     if (widget.hasSubmitted) return;
     setState(() {
-      if (oldIndex < newIndex) {
-        newIndex -= 1;
-      }
       final item = currentItems.removeAt(oldIndex);
       currentItems.insert(newIndex, item);
     });
@@ -98,7 +95,7 @@ class _OrderSequenceViewState extends State<OrderSequenceView> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           buildDefaultDragHandles: false,
-          onReorder: _onReorder,
+          onReorderItem: _onReorderItem,
           itemCount: currentItems.length,
           itemBuilder: (context, i) {
             final item = currentItems[i];

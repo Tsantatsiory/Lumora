@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/lesson_models.dart';
+import '../services/auth_service.dart';
 import '../theme.dart';
 import '../widgets/activities/flashcard_view.dart';
 import '../widgets/activities/multiple_choice_view.dart';
@@ -131,6 +132,7 @@ class _LessonSessionScreenState extends State<LessonSessionScreen> {
       setState(() {
         isCompleted = true;
       });
+      AuthService.instance.addXp(widget.lesson.xpReward);
     }
   }
 

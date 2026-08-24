@@ -171,6 +171,30 @@ class _LearnScreenState extends State<LearnScreen> {
     });
   }
 
+  String? _lessonIdFor(Map<String, dynamic> lesson) {
+    switch (lesson['title'] as String) {
+      case 'The Life of Jesus':
+        return 'jesus_miracles';
+      case 'David & Goliath':
+        return 'david_goliath';
+      case 'Love & Forgiveness':
+        return 'love_forgiveness';
+      case 'The Armor of God':
+        return 'armor_of_god';
+      default:
+        return null;
+    }
+  }
+
+  void _openLesson(Map<String, dynamic> lesson) {
+    final lessonId = _lessonIdFor(lesson);
+    if (lessonId == null) {
+      showLumoraToast(context, 'Cette leçon sera bientôt disponible.');
+      return;
+    }
+    _startLesson(lessonId);
+  }
+
   @override
   Widget build(BuildContext context) {
     if (activeSessionLesson != null) {
@@ -337,16 +361,6 @@ class _LearnScreenState extends State<LearnScreen> {
                             itemCount: filteredLessons.length,
                             itemBuilder: (context, i) {
                               final lesson = filteredLessons[i];
-                              final lessonId = i == 0
-                                  ? 'jesus_miracles'
-                                  : (lesson['title'] == 'David & Goliath'
-                                      ? 'david_goliath'
-                                      : (lesson['title'] == 'Love & Forgiveness'
-                                          ? 'love_forgiveness'
-                                          : (lesson['title'] == 'The Armor of God'
-                                              ? 'armor_of_god'
-                                              : 'jesus_miracles')));
-
                               return LessonCard(
                                 icon: lesson['icon'] as IconData,
                                 title: lesson['title'] as String,
@@ -356,7 +370,7 @@ class _LearnScreenState extends State<LearnScreen> {
                                 trailingText: lesson['xp'] as String,
                                 progress: lesson['progress'] as double?,
                                 headerColor: AppColors.chipBg,
-                                onTap: () => _startLesson(lessonId),
+                                onTap: () => _openLesson(lesson),
                               );
                             },
                           ),
