@@ -13,13 +13,13 @@ class FirebaseInitializer {
       await Firebase.initializeApp();
       _isInitialized = true;
       if (kDebugMode) {
-        print('🔥 Firebase Cloud Firestore initialisé avec succès !');
+        print('Firebase Cloud Firestore initialisé avec succès !');
       }
     } catch (e) {
       // En mode de développement local sans google-services.json configuré,
       // l'app continue de fonctionner en mode local résilient sans planter.
       if (kDebugMode) {
-        print('ℹ️ Firebase non lié au projet distant pour le moment : utilisation du mode local résilient.');
+        print('Firebase non lié au projet distant pour le moment : utilisation du mode local résilient.');
       }
     }
   }

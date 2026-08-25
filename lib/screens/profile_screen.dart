@@ -148,6 +148,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
     },
   ];
 
+  final Map<String, List<Map<String, dynamic>>> _savedVersesByUser = {};
+
+  bool get _isDemoProfile => _auth.currentUser.uid == 'demo_user_01';
+
+  List<Map<String, dynamic>> get _currentBadges => _isDemoProfile
+      ? _badges
+      : [
+          {
+            'title': 'Bienvenue',
+            'subtitle': 'Votre aventure Lumora commence',
+            'tag': 'Départ',
+            'icon': Icons.waving_hand_rounded,
+            'sticker': 'NEW',
+            'bgColor': AppColors.chipBg,
+            'date': 'Débloqué aujourd’hui',
+          },
+        ];
+
+  List<Map<String, dynamic>> get _currentActivities => _isDemoProfile
+      ? _activities
+      : [
+          {
+            'title': 'Compte créé',
+            'xp': '+25 XP',
+            'time': 'Aujourd’hui',
+            'icon': Icons.auto_awesome_rounded,
+            'iconColor': AppColors.lime,
+          },
+        ];
+
+  List<Map<String, dynamic>> get _currentSavedVerses => _isDemoProfile
+      ? _savedVerses
+      : _savedVersesByUser.putIfAbsent(_auth.currentUser.uid, () => []);
+
   @override
   Widget build(BuildContext context) {
     if (showAuthModal) {
@@ -211,7 +245,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           _IconButton(
                             icon: Icons.logout_rounded,
-                            onTap: () => setState(() => showAuthModal = true),
+                            onTap: () {
+                              _auth.logout();
+                              setState(() => showAuthModal = true);
+                            },
                           ),
                           const SizedBox(width: 8),
                           _IconButton(
@@ -232,7 +269,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Cover Banner with Avatar Overlap
-                        _buildCoverWithAvatar(),
+                        _buildCoverWithAvatar(user),
                         const SizedBox(height: 14),
 
                         Padding(
@@ -345,7 +382,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 children: [
                                   Expanded(
                                     child: InkWell(
-                                      onTap: () => showLumoraToast(context, 'Edit profile opened'),
+                                      onTap: _showEditProfileDialog,
                                       borderRadius: BorderRadius.circular(AppRadius.button),
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(vertical: 12),
@@ -473,7 +510,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   /// Cover banner with overlapping avatar (matches reference photo)
-  Widget _buildCoverWithAvatar() {
+  Widget _buildCoverWithAvatar(user) {
     return Stack(
       alignment: Alignment.center,
       clipBehavior: Clip.none,
@@ -494,7 +531,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               fit: StackFit.expand,
               children: [
                 Image.asset(
-                  'assets/images/profile_banner.jpg',
+                  user.bannerUrl,
                   fit: BoxFit.cover,
                   errorBuilder: (_, __, ___) => Container(color: AppColors.bannerBg),
                 ),
@@ -536,7 +573,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(17),
               child: Image.asset(
-                'assets/images/profile_avatar.jpg',
+                user.avatarUrl,
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => Container(
                   color: AppColors.bannerBg,
@@ -589,9 +626,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         mainAxisSpacing: 14,
         childAspectRatio: 0.85,
       ),
-      itemCount: _badges.length,
+      itemCount: _currentBadges.length,
       itemBuilder: (context, i) {
-        final badge = _badges[i];
+        final badge = _currentBadges[i];
         return InkWell(
           onTap: () => showLumoraToast(context, '${badge['title']} badge selected!'),
           borderRadius: BorderRadius.circular(AppRadius.card),
@@ -691,8 +728,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   /// Activity List
   Widget _buildActivityList() {
     return Column(
-      children: List.generate(_activities.length, (i) {
-        final act = _activities[i];
+      children: List.generate(_currentActivities.length, (i) {
+        final act = _currentActivities[i];
         return Container(
           margin: const EdgeInsets.only(bottom: 10),
           padding: const EdgeInsets.all(12),
@@ -744,8 +781,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
   /// Saved Verses List
   Widget _buildSavedVersesList() {
     return Column(
-      children: List.generate(_savedVerses.length, (i) {
-        final verse = _savedVerses[i];
+      children: [
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton.icon(
+            onPressed: _showAddVerseDialog,
+            icon: const Icon(Icons.add_rounded),
+            label: const Text('Ajouter un verset'),
+          ),
+        ),
+        if (_currentSavedVerses.isEmpty)
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Text('Aucun verset enregistré pour ce compte.', style: body(12, color: AppColors.muted)),
+          ),
+        ...List.generate(_currentSavedVerses.length, (i) {
+        final verse = _currentSavedVerses[i];
         return Container(
           margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsets.all(14),
@@ -782,7 +833,136 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         );
       }),
+      ],
     );
+  }
+
+  Future<void> _showEditProfileDialog() async {
+    final user = _auth.currentUser;
+    final nameController = TextEditingController(text: user.displayName);
+    final usernameController = TextEditingController(text: user.username.replaceFirst('@', ''));
+    final bioController = TextEditingController(text: user.bio);
+    var avatar = user.avatarUrl;
+    var banner = user.bannerUrl;
+    const avatars = ['assets/images/profile_avatar.jpg', 'assets/images/lesson_faith.jpg'];
+    const banners = ['assets/images/profile_banner.jpg', 'assets/images/lesson_miracles.jpg', 'assets/images/lesson_living.jpg'];
+
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: Text('Modifier le profil', style: heading(18)),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(controller: nameController, decoration: const InputDecoration(labelText: 'Nom affiché')),
+                TextField(
+                  controller: usernameController,
+                  enabled: _auth.usernameChangeDaysRemaining == 0,
+                  decoration: InputDecoration(
+                    labelText: 'Identifiant (@username)',
+                    helperText: _auth.usernameChangeDaysRemaining == 0
+                        ? 'Modifiable une fois tous les 30 jours'
+                        : 'Modifiable dans ${_auth.usernameChangeDaysRemaining} jours',
+                  ),
+                ),
+                TextField(controller: bioController, maxLines: 3, decoration: const InputDecoration(labelText: 'Bio')),
+                const SizedBox(height: 14),
+                Align(alignment: Alignment.centerLeft, child: Text('Photo de profil', style: body(12, weight: FontWeight.w900))),
+                Wrap(
+                  spacing: 8,
+                  children: avatars.map((path) => ChoiceChip(
+                    label: const Text('Choisir'),
+                    selected: avatar == path,
+                    onSelected: (_) => setDialogState(() => avatar = path),
+                  )).toList(),
+                ),
+                const SizedBox(height: 8),
+                Align(alignment: Alignment.centerLeft, child: Text('Bannière', style: body(12, weight: FontWeight.w900))),
+                Wrap(
+                  spacing: 8,
+                  children: banners.map((path) => ChoiceChip(
+                    label: const Text('Choisir'),
+                    selected: banner == path,
+                    onSelected: (_) => setDialogState(() => banner = path),
+                  )).toList(),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text('Annuler')),
+            FilledButton(
+              onPressed: () {
+                final requestedUsername = usernameController.text.trim();
+                if ('@$requestedUsername' != user.username) {
+                  final error = _auth.updateUsername(requestedUsername);
+                  if (error != null) {
+                    showLumoraToast(this.context, error);
+                    return;
+                  }
+                }
+                _auth.updateProfile(
+                  displayName: nameController.text.trim().isEmpty ? user.displayName : nameController.text.trim(),
+                  bio: bioController.text.trim(),
+                  avatarUrl: avatar,
+                  bannerUrl: banner,
+                );
+                Navigator.pop(dialogContext);
+                showLumoraToast(this.context, 'Profil mis à jour ✓');
+              },
+              child: const Text('Enregistrer'),
+            ),
+          ],
+        ),
+      ),
+    );
+    nameController.dispose();
+    usernameController.dispose();
+    bioController.dispose();
+  }
+
+  Future<void> _showAddVerseDialog() async {
+    final referenceController = TextEditingController();
+    final textController = TextEditingController();
+    final categoryController = TextEditingController(text: 'Favori');
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text('Enregistrer un verset', style: heading(18)),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(controller: referenceController, decoration: const InputDecoration(labelText: 'Référence')),
+              TextField(controller: textController, maxLines: 3, decoration: const InputDecoration(labelText: 'Texte du verset')),
+              TextField(controller: categoryController, decoration: const InputDecoration(labelText: 'Catégorie')),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text('Annuler')),
+          FilledButton(
+            onPressed: () {
+              if (referenceController.text.trim().isEmpty || textController.text.trim().isEmpty) return;
+              setState(() {
+                _currentSavedVerses.add({
+                  'reference': referenceController.text.trim(),
+                  'text': textController.text.trim(),
+                  'category': categoryController.text.trim().isEmpty ? 'Favori' : categoryController.text.trim(),
+                });
+              });
+              Navigator.pop(dialogContext);
+            },
+            child: const Text('Enregistrer'),
+          ),
+        ],
+      ),
+    );
+    referenceController.dispose();
+    textController.dispose();
+    categoryController.dispose();
   }
 }
 

@@ -11,7 +11,7 @@ import '../services/auth_service.dart';
 import 'profile_screen.dart';
 import 'leaderboard_screen.dart';
 import 'learn_screen.dart';
-import 'notifications_screen.dart';
+import 'search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,7 +22,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int navIndex = 0;
-  bool isShowingNotifications = false;
+  bool isShowingSearch = false;
   bool dailyClaimed = false;
   final int xpGoal = 1000;
 
@@ -58,16 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (isShowingNotifications) {
-      return NotificationsScreen(
-        onBack: () => setState(() => isShowingNotifications = false),
-        onNavigateToTab: (index) {
-          setState(() {
-            isShowingNotifications = false;
-            navIndex = index;
-          });
-        },
-      );
+    if (isShowingSearch) {
+      return SearchScreen(onBack: () => setState(() => isShowingSearch = false));
     }
 
     if (navIndex == 3) {
@@ -105,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               children: [
                 _TopBar(
-                  onBell: () => setState(() => isShowingNotifications = true),
+                  onBell: () => setState(() => isShowingSearch = true),
                   onProfile: () => setState(() => navIndex = 3),
                 ),
                 Expanded(
@@ -440,8 +432,7 @@ class _TopBar extends StatelessWidget {
           Row(
             children: [
               _IconButton(
-                icon: Icons.notifications_none_rounded,
-                showDot: true,
+                icon: Icons.search_rounded,
                 onTap: onBell,
               ),
               const SizedBox(width: 10),
@@ -459,9 +450,8 @@ class _TopBar extends StatelessWidget {
 
 class _IconButton extends StatelessWidget {
   final IconData icon;
-  final bool showDot;
   final VoidCallback onTap;
-  const _IconButton({required this.icon, required this.onTap, this.showDot = false});
+  const _IconButton({required this.icon, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -484,20 +474,6 @@ class _IconButton extends StatelessWidget {
             clipBehavior: Clip.none,
             children: [
               Icon(icon, size: 20, color: AppColors.text),
-              if (showDot)
-                Positioned(
-                  right: -1,
-                  top: -2,
-                  child: Container(
-                    width: 10,
-                    height: 10,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.lime,
-                      border: Border.all(color: AppColors.surface, width: 2),
-                    ),
-                  ),
-                ),
             ],
           ),
         ),

@@ -64,12 +64,14 @@ class UserService {
   }
 
   // Mettre à jour les informations du profil (bio, nom, photo)
-  Future<void> updateProfileDetails(String uid, {String? displayName, String? bio, String? avatarUrl, String? bannerUrl}) async {
+  Future<void> updateProfileDetails(String uid, {String? displayName, String? bio, String? avatarUrl, String? bannerUrl, String? username, DateTime? usernameChangedAt}) async {
     final Map<String, dynamic> updates = {};
     if (displayName != null) updates['displayName'] = displayName;
     if (bio != null) updates['bio'] = bio;
     if (avatarUrl != null) updates['avatarUrl'] = avatarUrl;
     if (bannerUrl != null) updates['bannerUrl'] = bannerUrl;
+    if (username != null) updates['username'] = username;
+    if (usernameChangedAt != null) updates['usernameChangedAt'] = Timestamp.fromDate(usernameChangedAt);
 
     if (updates.isNotEmpty) {
       await _firestore.usersCollection.doc(uid).update(updates);

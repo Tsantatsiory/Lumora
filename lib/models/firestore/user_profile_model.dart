@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserProfileModel {
   final String uid;
   final String username;
+  final DateTime? usernameChangedAt;
   final String displayName;
   final String email;
   final String avatarUrl;
@@ -23,6 +24,7 @@ class UserProfileModel {
   const UserProfileModel({
     required this.uid,
     required this.username,
+    this.usernameChangedAt,
     required this.displayName,
     this.email = '',
     this.avatarUrl = 'assets/images/profile_avatar.jpg',
@@ -45,6 +47,7 @@ class UserProfileModel {
     return {
       'uid': uid,
       'username': username,
+      'usernameChangedAt': usernameChangedAt != null ? Timestamp.fromDate(usernameChangedAt!) : null,
       'displayName': displayName,
       'email': email,
       'avatarUrl': avatarUrl,
@@ -64,11 +67,54 @@ class UserProfileModel {
     };
   }
 
+  Map<String, dynamic> toLocalJson() => {
+        'uid': uid,
+        'username': username,
+        'usernameChangedAt': usernameChangedAt?.toIso8601String(),
+        'displayName': displayName,
+        'email': email,
+        'avatarUrl': avatarUrl,
+        'bannerUrl': bannerUrl,
+        'bio': bio,
+        'level': level,
+        'totalXp': totalXp,
+        'weeklyXp': weeklyXp,
+        'streakDays': streakDays,
+        'energyCount': energyCount,
+        'maxEnergy': maxEnergy,
+        'followersCount': followersCount,
+        'followingCount': followingCount,
+        'badgesCount': badgesCount,
+        'createdAt': createdAt.toIso8601String(),
+      };
+
+  factory UserProfileModel.fromLocalJson(Map<String, dynamic> data) => UserProfileModel(
+        uid: data['uid'] as String,
+        username: data['username'] as String,
+        usernameChangedAt: data['usernameChangedAt'] == null ? null : DateTime.tryParse(data['usernameChangedAt'] as String),
+        displayName: data['displayName'] as String,
+        email: data['email'] as String,
+        avatarUrl: data['avatarUrl'] as String? ?? 'assets/images/profile_avatar.jpg',
+        bannerUrl: data['bannerUrl'] as String? ?? 'assets/images/profile_banner.jpg',
+        bio: data['bio'] as String? ?? '',
+        level: data['level'] as int? ?? 1,
+        totalXp: data['totalXp'] as int? ?? 0,
+        weeklyXp: data['weeklyXp'] as int? ?? 0,
+        streakDays: data['streakDays'] as int? ?? 1,
+        energyCount: data['energyCount'] as int? ?? 5,
+        maxEnergy: data['maxEnergy'] as int? ?? 5,
+        followersCount: data['followersCount'] as int? ?? 0,
+        followingCount: data['followingCount'] as int? ?? 0,
+        badgesCount: data['badgesCount'] as int? ?? 0,
+        createdAt: DateTime.tryParse(data['createdAt'] as String? ?? '') ?? DateTime.now(),
+      );
+
   factory UserProfileModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>? ?? {};
     return UserProfileModel(
       uid: doc.id,
       username: data['username'] as String? ?? '@user',
+      usernameChangedAt: (data['usernameChangedAt'] as Timestamp?)?.toDate(),
       displayName: data['displayName'] as String? ?? 'Seeker',
       email: data['email'] as String? ?? '',
       avatarUrl: data['avatarUrl'] as String? ?? 'assets/images/profile_avatar.jpg',
@@ -90,6 +136,7 @@ class UserProfileModel {
 
   UserProfileModel copyWith({
     String? username,
+    DateTime? usernameChangedAt,
     String? displayName,
     String? avatarUrl,
     String? bannerUrl,
@@ -107,6 +154,7 @@ class UserProfileModel {
     return UserProfileModel(
       uid: uid,
       username: username ?? this.username,
+      usernameChangedAt: usernameChangedAt ?? this.usernameChangedAt,
       displayName: displayName ?? this.displayName,
       email: email,
       avatarUrl: avatarUrl ?? this.avatarUrl,

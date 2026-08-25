@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/social_service.dart';
+import '../services/auth_service.dart';
+import 'public_profile_screen.dart';
 import '../theme.dart';
 import '../widgets/lumora_toast.dart';
 
@@ -20,6 +22,7 @@ class FriendsScreen extends StatefulWidget {
 class _FriendsScreenState extends State<FriendsScreen> {
   late int selectedTab;
   final SocialService _socialService = SocialService.instance;
+  final AuthService _authService = AuthService.instance;
 
   static const _tabs = ['Abonnés (Followers)', 'Abonnements (Following)', 'Découvrir ✨'];
 
@@ -28,11 +31,13 @@ class _FriendsScreenState extends State<FriendsScreen> {
     super.initState();
     selectedTab = widget.initialTabIndex;
     _socialService.addListener(_onSocialUpdate);
+    _authService.addListener(_onSocialUpdate);
   }
 
   @override
   void dispose() {
     _socialService.removeListener(_onSocialUpdate);
+    _authService.removeListener(_onSocialUpdate);
     super.dispose();
   }
 
@@ -193,7 +198,13 @@ class _FriendsScreenState extends State<FriendsScreen> {
   }
 
   Widget _buildUserCard(FriendUser user) {
-    return Container(
+    final isFollowing = _socialService.isFollowing(user.uid);
+    return InkWell(
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => PublicProfileScreen(userId: user.uid)),
+      ),
+      borderRadius: BorderRadius.circular(AppRadius.card),
+      child: Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
@@ -259,11 +270,13 @@ class _FriendsScreenState extends State<FriendsScreen> {
 
           // Follow / Unfollow Button
           InkWell(
-            onTap: () {
-              _socialService.toggleFollow(user.uid);
+            onTap: () async {
+              final following = await _socialService.toggleFollow(user.uid);
+              if (!mounted) return;
+              if (following == null) return;
               showLumoraToast(
                 context,
-                user.isFollowing
+                following
                     ? 'Vous suivez maintenant ${user.displayName} ✓'
                     : 'Abonnement retiré pour ${user.displayName}',
               );
@@ -272,22 +285,23 @@ class _FriendsScreenState extends State<FriendsScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
               decoration: BoxDecoration(
-                color: user.isFollowing ? AppColors.surface : AppColors.lime,
+                color: isFollowing ? AppColors.surface : AppColors.lime,
                 borderRadius: BorderRadius.circular(8),
                 border: AppBorders.neo(width: 1.5),
-                boxShadow: user.isFollowing ? null : AppShadows.neo(offset: 1.8),
+                boxShadow: isFollowing ? null : AppShadows.neo(offset: 1.8),
               ),
               child: Text(
-                user.isFollowing ? 'Abonné ✓' : 'Suivre +',
+                isFollowing ? 'Abonné ✓' : 'Suivre +',
                 style: body(
                   11,
                   weight: FontWeight.w900,
-                  color: user.isFollowing ? AppColors.text : AppColors.surface,
+                  color: isFollowing ? AppColors.text : AppColors.surface,
                 ),
               ),
             ),
           ),
         ],
+      ),
       ),
     );
   }

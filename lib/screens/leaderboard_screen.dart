@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../theme.dart';
 import '../widgets/lumora_bottom_nav.dart';
 import '../widgets/lumora_toast.dart';
+import '../services/auth_service.dart';
 
 class LeaderboardScreen extends StatefulWidget {
   final VoidCallback? onBack;
@@ -122,16 +123,40 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
     },
   ];
 
+  List<Map<String, dynamic>> get _dynamicTopUsers {
+    final auth = AuthService.instance;
+    final profiles = [...auth.profiles];
+    if (profiles.isEmpty) return _topUsers;
+    if (!profiles.any((profile) => profile.uid == auth.currentUser.uid)) {
+      profiles.add(auth.currentUser);
+    }
+    profiles.sort((a, b) => b.totalXp.compareTo(a.totalXp));
+    return profiles.asMap().entries.map((entry) {
+      final user = entry.value;
+      return {
+        'rank': entry.key + 1,
+        'name': user.displayName,
+        'handle': user.username,
+        'level': user.level,
+        'xp': user.totalXp,
+        'streak': user.streakDays,
+        'avatar': user.username.contains('sarah') ? '👩‍🎓' : user.username.contains('david') ? '🧑‍💼' : user.username.contains('esther') ? '👩‍🎨' : '🧑‍💻',
+        'isYou': user.uid == auth.currentUser.uid,
+      };
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final isWide = width >= 900;
 
-    final rank1 = _topUsers[0];
-    final rank2 = _topUsers[1];
-    final rank3 = _topUsers[2];
-    final remainingUsers = _topUsers.sublist(3);
-    final currentUser = _topUsers.firstWhere((u) => u['isYou'] == true);
+    final topUsers = _dynamicTopUsers;
+    final rank1 = topUsers[0];
+    final rank2 = topUsers[1];
+    final rank3 = topUsers[2];
+    final remainingUsers = topUsers.sublist(3);
+    final currentUser = topUsers.firstWhere((u) => u['isYou'] == true);
 
     return Scaffold(
       backgroundColor: AppColors.bgOuter,

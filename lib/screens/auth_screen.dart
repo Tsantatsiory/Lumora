@@ -43,7 +43,14 @@ class _AuthScreenState extends State<AuthScreen> {
     setState(() => isLoading = true);
 
     if (isLogin) {
-      await AuthService.instance.login(email, password);
+      final success = await AuthService.instance.login(email, password);
+      if (!success) {
+        if (mounted) {
+          setState(() => isLoading = false);
+          showLumoraToast(context, AuthService.instance.lastError ?? 'Connexion impossible');
+        }
+        return;
+      }
       if (mounted) showLumoraToast(context, 'Ravi de vous revoir ! 👋');
     } else {
       final name = _nameController.text.trim();
@@ -53,12 +60,19 @@ class _AuthScreenState extends State<AuthScreen> {
         showLumoraToast(context, 'Veuillez renseigner votre nom et pseudo');
         return;
       }
-      await AuthService.instance.register(
+      final success = await AuthService.instance.register(
         fullName: name,
         username: username,
         email: email,
         password: password,
       );
+      if (!success) {
+        if (mounted) {
+          setState(() => isLoading = false);
+          showLumoraToast(context, AuthService.instance.lastError ?? 'Création du compte impossible');
+        }
+        return;
+      }
       if (mounted) showLumoraToast(context, 'Compte créé avec succès ! Bienvenue 🌟');
     }
 
@@ -68,9 +82,14 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
-  void _loginAsDemo() {
-    AuthService.instance.loginAsDemo();
-    showLumoraToast(context, 'Connecté en tant que Tsanta Tsiory 🔥');
+  Future<void> _loginAsDemo() async {
+    final success = await AuthService.instance.loginAsDemo();
+    if (!mounted) return;
+    if (!success) {
+      showLumoraToast(context, 'Compte de démonstration indisponible');
+      return;
+    }
+    showLumoraToast(context, 'Connecté en tant que Sarah M. 🔥');
     widget.onAuthSuccess();
   }
 
@@ -256,6 +275,22 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   const SizedBox(height: 16),
 
+                  if (isLogin)
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: AppColors.chipBg,
+                        borderRadius: BorderRadius.circular(10),
+                        border: AppBorders.neo(width: 1.2),
+                      ),
+                      child: Text(
+                        'Comptes test : sarah@lumora.app, david@lumora.app ou esther@lumora.app\nMot de passe : demo123',
+                        style: body(10.5, color: AppColors.muted, weight: FontWeight.w700),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  if (isLogin) const SizedBox(height: 12),
+
                   // Quick Demo Login Button
                   InkWell(
                     onTap: _loginAsDemo,
@@ -275,7 +310,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           const Icon(Icons.flash_on_rounded, size: 18, color: AppColors.amber),
                           const SizedBox(width: 6),
                           Text(
-                            'Connexion Démo Instantanée (Tsanta)',
+                            'Connexion Démo Instantanée (Sarah)',
                             style: body(12.5, weight: FontWeight.w900, color: AppColors.text),
                           ),
                         ],
