@@ -143,7 +143,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     },
     {
       'reference': 'Proverbs 3:5-6',
-      'text': 'Trust in the Lord with all your heart, and do not lean on your own understanding.',
+      'text':
+          'Trust in the Lord with all your heart, and do not lean on your own understanding.',
       'category': 'Trust',
     },
   ];
@@ -229,14 +230,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               border: AppBorders.neo(width: 2.0),
                               boxShadow: AppShadows.neo(offset: 2.0),
                             ),
-                            child: const Icon(Icons.arrow_back_rounded, size: 20, color: AppColors.text),
+                            child: const Icon(Icons.arrow_back_rounded,
+                                size: 20, color: AppColors.text),
                           ),
                         ),
                       if (widget.onBack != null) const SizedBox(width: 10),
                       Expanded(
                         child: Text(
                           '${user.username} • Level ${user.level} Seeker',
-                          style: heading(14, weight: FontWeight.w900, color: AppColors.text),
+                          style: heading(14,
+                              weight: FontWeight.w900, color: AppColors.text),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -253,7 +256,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           const SizedBox(width: 8),
                           _IconButton(
                             icon: Icons.share_outlined,
-                            onTap: () => showLumoraToast(context, 'Lien de profil copié ! 📋'),
+                            onTap: () => showLumoraToast(
+                                context, 'Lien de profil copié ! 📋'),
                           ),
                         ],
                       ),
@@ -273,7 +277,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         const SizedBox(height: 14),
 
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 30),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 18, vertical: 30),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
@@ -281,7 +286,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(user.displayName, style: heading(22, weight: FontWeight.w900)),
+                                  Text(user.displayName,
+                                      style:
+                                          heading(22, weight: FontWeight.w900)),
                                   const SizedBox(width: 8),
                                   Container(
                                     padding: const EdgeInsets.all(3),
@@ -290,7 +297,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       shape: BoxShape.circle,
                                       border: AppBorders.neo(width: 1.5),
                                     ),
-                                    child: const Icon(Icons.check_rounded, size: 14, color: AppColors.surface),
+                                    child: const Icon(Icons.check_rounded,
+                                        size: 14, color: AppColors.surface),
                                   ),
                                 ],
                               ),
@@ -301,10 +309,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   InkWell(
-                                    onTap: () => setState(() => openFriendsTab = 0),
+                                    onTap: () =>
+                                        setState(() => openFriendsTab = 0),
                                     borderRadius: BorderRadius.circular(20),
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 5),
                                       decoration: BoxDecoration(
                                         color: AppColors.surface,
                                         borderRadius: BorderRadius.circular(20),
@@ -314,20 +324,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Text('${user.followersCount}', style: heading(12.5, weight: FontWeight.w900)),
+                                          Text('${user.followersCount}',
+                                              style: heading(12.5,
+                                                  weight: FontWeight.w900)),
                                           const SizedBox(width: 4),
                                           Text('Followers',
-                                              style: body(11, color: AppColors.muted, weight: FontWeight.w700)),
+                                              style: body(11,
+                                                  color: AppColors.muted,
+                                                  weight: FontWeight.w700)),
                                         ],
                                       ),
                                     ),
                                   ),
                                   const SizedBox(width: 8),
                                   InkWell(
-                                    onTap: () => setState(() => openFriendsTab = 1),
+                                    onTap: () =>
+                                        setState(() => openFriendsTab = 1),
                                     borderRadius: BorderRadius.circular(20),
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 5),
                                       decoration: BoxDecoration(
                                         color: AppColors.surface,
                                         borderRadius: BorderRadius.circular(20),
@@ -337,10 +353,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Text('${user.followingCount}', style: heading(12.5, weight: FontWeight.w900)),
+                                          Text('${user.followingCount}',
+                                              style: heading(12.5,
+                                                  weight: FontWeight.w900)),
                                           const SizedBox(width: 4),
                                           Text('Following',
-                                              style: body(11, color: AppColors.muted, weight: FontWeight.w700)),
+                                              style: body(11,
+                                                  color: AppColors.muted,
+                                                  weight: FontWeight.w700)),
                                         ],
                                       ),
                                     ),
@@ -351,7 +371,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                               // Bio Quote
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 14, vertical: 8),
                                 decoration: BoxDecoration(
                                   color: AppColors.surface,
                                   borderRadius: BorderRadius.circular(12),
@@ -359,7 +380,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 child: Text(
                                   user.bio,
-                                  style: body(11.5, color: AppColors.text, height: 1.4),
+                                  style: body(11.5,
+                                      color: AppColors.text, height: 1.4),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -368,11 +390,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               // 3 Key Stats Boxes
                               Row(
                                 children: [
-                                  _buildStatBox('${user.totalXp}', 'Total XP', Icons.bolt_rounded, AppColors.lime),
+                                  _buildStatBox('${user.totalXp}', 'Total XP',
+                                      Icons.bolt_rounded, AppColors.lime),
                                   const SizedBox(width: 10),
-                                  _buildStatBox('${user.streakDays}', 'Day Streak', Icons.local_fire_department_rounded, AppColors.amber),
+                                  _buildStatBox(
+                                      '${user.streakDays}',
+                                      'Day Streak',
+                                      Icons.local_fire_department_rounded,
+                                      AppColors.amber),
                                   const SizedBox(width: 10),
-                                  _buildStatBox('${user.badgesCount}', 'Badges', Icons.military_tech_rounded, AppColors.amber),
+                                  _buildStatBox(
+                                      '${user.badgesCount}',
+                                      'Badges',
+                                      Icons.military_tech_rounded,
+                                      AppColors.amber),
                                 ],
                               ),
                               const SizedBox(height: 16),
@@ -383,24 +414,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   Expanded(
                                     child: InkWell(
                                       onTap: _showEditProfileDialog,
-                                      borderRadius: BorderRadius.circular(AppRadius.button),
+                                      borderRadius: BorderRadius.circular(
+                                          AppRadius.button),
                                       child: Container(
-                                        padding: const EdgeInsets.symmetric(vertical: 12),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 12),
                                         decoration: BoxDecoration(
                                           color: AppColors.bannerBg,
-                                          borderRadius: BorderRadius.circular(AppRadius.button),
+                                          borderRadius: BorderRadius.circular(
+                                              AppRadius.button),
                                           border: AppBorders.neo(width: 2.2),
-                                          boxShadow: AppShadows.neo(offset: 3.0),
+                                          boxShadow:
+                                              AppShadows.neo(offset: 3.0),
                                         ),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             Text(
                                               'Edit Profile',
-                                              style: body(13.5, weight: FontWeight.w900, color: AppColors.text),
+                                              style: body(13.5,
+                                                  weight: FontWeight.w900,
+                                                  color: AppColors.text),
                                             ),
                                             const SizedBox(width: 6),
-                                            const Icon(Icons.add_rounded, size: 18, color: AppColors.text),
+                                            const Icon(Icons.add_rounded,
+                                                size: 18,
+                                                color: AppColors.text),
                                           ],
                                         ),
                                       ),
@@ -408,19 +448,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                   const SizedBox(width: 10),
                                   InkWell(
-                                    onTap: () => showLumoraToast(context, 'More options'),
-                                    borderRadius: BorderRadius.circular(AppRadius.button),
+                                    onTap: () => showLumoraToast(
+                                        context, 'More options'),
+                                    borderRadius:
+                                        BorderRadius.circular(AppRadius.button),
                                     child: Container(
                                       width: 48,
                                       height: 48,
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
                                         color: AppColors.surface,
-                                        borderRadius: BorderRadius.circular(AppRadius.button),
+                                        borderRadius: BorderRadius.circular(
+                                            AppRadius.button),
                                         border: AppBorders.neo(width: 2.2),
                                         boxShadow: AppShadows.neo(offset: 3.0),
                                       ),
-                                      child: const Icon(Icons.more_vert_rounded, size: 22, color: AppColors.text),
+                                      child: const Icon(Icons.more_vert_rounded,
+                                          size: 22, color: AppColors.text),
                                     ),
                                   ),
                                 ],
@@ -434,9 +478,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   return Padding(
                                     padding: const EdgeInsets.only(right: 18),
                                     child: InkWell(
-                                      onTap: () => setState(() => selectedTab = i),
+                                      onTap: () =>
+                                          setState(() => selectedTab = i),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Stack(
                                             children: [
@@ -449,7 +495,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     height: 8,
                                                     decoration: BoxDecoration(
                                                       color: AppColors.bannerBg,
-                                                      borderRadius: BorderRadius.circular(4),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4),
                                                     ),
                                                   ),
                                                 ),
@@ -457,8 +505,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 _tabs[i],
                                                 style: heading(
                                                   16,
-                                                  weight: isSelected ? FontWeight.w900 : FontWeight.w600,
-                                                  color: isSelected ? AppColors.text : AppColors.muted,
+                                                  weight: isSelected
+                                                      ? FontWeight.w900
+                                                      : FontWeight.w600,
+                                                  color: isSelected
+                                                      ? AppColors.text
+                                                      : AppColors.muted,
                                                 ),
                                               ),
                                             ],
@@ -533,13 +585,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Image.asset(
                   user.bannerUrl,
                   fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Container(color: AppColors.bannerBg),
+                  errorBuilder: (_, __, ___) =>
+                      Container(color: AppColors.bannerBg),
                 ),
                 Positioned(
                   left: 14,
                   bottom: 14,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: AppColors.surface,
                       borderRadius: BorderRadius.circular(6),
@@ -548,7 +602,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     child: Text(
                       'LUMORA LEARNER',
-                      style: body(9.5, weight: FontWeight.w900, color: AppColors.text),
+                      style: body(9.5,
+                          weight: FontWeight.w900, color: AppColors.text),
                     ),
                   ),
                 ),
@@ -589,7 +644,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   /// 3 Stat boxes (Followers / Value / Owned in reference -> Total XP / Streak / Badges)
-  Widget _buildStatBox(String value, String label, IconData icon, Color iconColor) {
+  Widget _buildStatBox(
+      String value, String label, IconData icon, Color iconColor) {
     return Expanded(
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
@@ -615,110 +671,59 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  /// 2-Column Badges Grid (matches the 2-column cards layout from the photo)
+  /// Grille de badges minimaliste : icône cerclée + nom.
   Widget _buildBadgesGrid(bool isWide) {
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: isWide ? 4 : 2,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 14,
-        childAspectRatio: 0.85,
+        crossAxisCount: isWide ? 6 : 3,
+        crossAxisSpacing: 16,
+        mainAxisSpacing: 20,
+        childAspectRatio: 0.9,
       ),
       itemCount: _currentBadges.length,
       itemBuilder: (context, i) {
         final badge = _currentBadges[i];
         return InkWell(
-          onTap: () => showLumoraToast(context, '${badge['title']} badge selected!'),
-          borderRadius: BorderRadius.circular(AppRadius.card),
-          child: Container(
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(AppRadius.card),
-              border: AppBorders.neo(width: 2.2),
-              boxShadow: AppShadows.neo(offset: 3.0),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Top Thumbnail Area with Icon & Sticker
-                Container(
-                  height: 90,
-                  decoration: BoxDecoration(
-                    color: badge['bgColor'] as Color,
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(AppRadius.card - 2.2),
+          onTap: () =>
+              showLumoraToast(context, '${badge['title']} badge selected!'),
+          borderRadius: BorderRadius.circular(40),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 68,
+                height: 68,
+                decoration: BoxDecoration(
+                  color: badge['bgColor'] as Color,
+                  shape: BoxShape.circle,
+                  border: AppBorders.neo(width: 2),
+                  boxShadow: AppShadows.neo(offset: 2.5),
+                ),
+                child: Center(
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: AppColors.surface,
+                      shape: BoxShape.circle,
+                      border: AppBorders.neo(width: 1.5),
                     ),
-                    border: const Border(
-                      bottom: BorderSide(color: AppColors.neoBorder, width: 2.0),
-                    ),
-                  ),
-                  child: Stack(
-                    children: [
-                      Center(
-                        child: Container(
-                          width: 44,
-                          height: 44,
-                          decoration: BoxDecoration(
-                            color: AppColors.surface,
-                            shape: BoxShape.circle,
-                            border: AppBorders.neo(width: 1.8),
-                          ),
-                          child: Icon(badge['icon'] as IconData, size: 22, color: AppColors.text),
-                        ),
-                      ),
-                      Positioned(
-                        top: 6,
-                        left: 6,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: AppColors.surface,
-                            borderRadius: BorderRadius.circular(5),
-                            border: AppBorders.neo(width: 1.2),
-                          ),
-                          child: Text(badge['sticker'] as String, style: const TextStyle(fontSize: 10)),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 6,
-                        left: 6,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: AppColors.text,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            badge['tag'] as String,
-                            style: body(8.5, weight: FontWeight.w800, color: AppColors.bg),
-                          ),
-                        ),
-                      ),
-                    ],
+                    child: Icon(badge['icon'] as IconData,
+                        size: 25, color: AppColors.text),
                   ),
                 ),
-                // Text Area
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(badge['title'] as String, style: heading(13, weight: FontWeight.w900), maxLines: 1),
-                      const SizedBox(height: 2),
-                      Text(badge['subtitle'] as String,
-                          style: body(10, color: AppColors.muted, weight: FontWeight.w600),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis),
-                      const SizedBox(height: 4),
-                      Text(badge['date'] as String,
-                          style: body(9, color: AppColors.lime2, weight: FontWeight.w800)),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                badge['title'] as String,
+                style: body(11, weight: FontWeight.w900),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
         );
       },
@@ -749,16 +754,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   borderRadius: BorderRadius.circular(10),
                   border: AppBorders.neo(width: 1.5),
                 ),
-                child: Icon(act['icon'] as IconData, size: 20, color: act['iconColor'] as Color),
+                child: Icon(act['icon'] as IconData,
+                    size: 20, color: act['iconColor'] as Color),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(act['title'] as String, style: heading(12.5, weight: FontWeight.w800)),
+                    Text(act['title'] as String,
+                        style: heading(12.5, weight: FontWeight.w800)),
                     const SizedBox(height: 2),
-                    Text(act['time'] as String, style: body(10, color: AppColors.muted)),
+                    Text(act['time'] as String,
+                        style: body(10, color: AppColors.muted)),
                   ],
                 ),
               ),
@@ -769,7 +777,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   borderRadius: BorderRadius.circular(6),
                   border: AppBorders.neo(width: 1.2),
                 ),
-                child: Text(act['xp'] as String, style: body(10.5, weight: FontWeight.w900)),
+                child: Text(act['xp'] as String,
+                    style: body(10.5, weight: FontWeight.w900)),
               ),
             ],
           ),
@@ -793,46 +802,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
         if (_currentSavedVerses.isEmpty)
           Padding(
             padding: const EdgeInsets.all(20),
-            child: Text('Aucun verset enregistré pour ce compte.', style: body(12, color: AppColors.muted)),
+            child: Text('Aucun verset enregistré pour ce compte.',
+                style: body(12, color: AppColors.muted)),
           ),
         ...List.generate(_currentSavedVerses.length, (i) {
-        final verse = _currentSavedVerses[i];
-        return Container(
-          margin: const EdgeInsets.only(bottom: 12),
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: BorderRadius.circular(14),
-            border: AppBorders.neo(width: 2.0),
-            boxShadow: AppShadows.neo(offset: 2.5),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(verse['reference'] as String, style: heading(14, weight: FontWeight.w900)),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                    decoration: BoxDecoration(
-                      color: AppColors.chipBg,
-                      borderRadius: BorderRadius.circular(6),
-                      border: AppBorders.neo(width: 1.2),
+          final verse = _currentSavedVerses[i];
+          return Container(
+            margin: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(14),
+              border: AppBorders.neo(width: 2.0),
+              boxShadow: AppShadows.neo(offset: 2.5),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(verse['reference'] as String,
+                        style: heading(14, weight: FontWeight.w900)),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: AppColors.chipBg,
+                        borderRadius: BorderRadius.circular(6),
+                        border: AppBorders.neo(width: 1.2),
+                      ),
+                      child: Text(verse['category'] as String,
+                          style: body(9.5, weight: FontWeight.w800)),
                     ),
-                    child: Text(verse['category'] as String, style: body(9.5, weight: FontWeight.w800)),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Text(
-                '“${verse['text']}”',
-                style: body(12, color: AppColors.text, height: 1.45),
-              ),
-            ],
-          ),
-        );
-      }),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '“${verse['text']}”',
+                  style: body(12, color: AppColors.text, height: 1.45),
+                ),
+              ],
+            ),
+          );
+        }),
       ],
     );
   }
@@ -840,12 +853,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _showEditProfileDialog() async {
     final user = _auth.currentUser;
     final nameController = TextEditingController(text: user.displayName);
-    final usernameController = TextEditingController(text: user.username.replaceFirst('@', ''));
+    final usernameController =
+        TextEditingController(text: user.username.replaceFirst('@', ''));
     final bioController = TextEditingController(text: user.bio);
     var avatar = user.avatarUrl;
     var banner = user.bannerUrl;
-    const avatars = ['assets/images/profile_avatar.jpg', 'assets/images/lesson_faith.jpg'];
-    const banners = ['assets/images/profile_banner.jpg', 'assets/images/lesson_miracles.jpg', 'assets/images/lesson_living.jpg'];
+    const avatars = [
+      'assets/images/profile_avatar.jpg',
+      'assets/images/lesson_faith.jpg'
+    ];
+    const banners = [
+      'assets/images/profile_banner.jpg',
+      'assets/images/lesson_miracles.jpg',
+      'assets/images/lesson_living.jpg'
+    ];
 
     await showDialog<void>(
       context: context,
@@ -856,7 +877,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                TextField(controller: nameController, decoration: const InputDecoration(labelText: 'Nom affiché')),
+                TextField(
+                    controller: nameController,
+                    decoration:
+                        const InputDecoration(labelText: 'Nom affiché')),
                 TextField(
                   controller: usernameController,
                   enabled: _auth.usernameChangeDaysRemaining == 0,
@@ -867,32 +891,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         : 'Modifiable dans ${_auth.usernameChangeDaysRemaining} jours',
                   ),
                 ),
-                TextField(controller: bioController, maxLines: 3, decoration: const InputDecoration(labelText: 'Bio')),
+                TextField(
+                    controller: bioController,
+                    maxLines: 3,
+                    decoration: const InputDecoration(labelText: 'Bio')),
                 const SizedBox(height: 14),
-                Align(alignment: Alignment.centerLeft, child: Text('Photo de profil', style: body(12, weight: FontWeight.w900))),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Photo de profil',
+                        style: body(12, weight: FontWeight.w900))),
                 Wrap(
                   spacing: 8,
-                  children: avatars.map((path) => ChoiceChip(
-                    label: const Text('Choisir'),
-                    selected: avatar == path,
-                    onSelected: (_) => setDialogState(() => avatar = path),
-                  )).toList(),
+                  children: avatars
+                      .map((path) => ChoiceChip(
+                            label: const Text('Choisir'),
+                            selected: avatar == path,
+                            onSelected: (_) =>
+                                setDialogState(() => avatar = path),
+                          ))
+                      .toList(),
                 ),
                 const SizedBox(height: 8),
-                Align(alignment: Alignment.centerLeft, child: Text('Bannière', style: body(12, weight: FontWeight.w900))),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Bannière',
+                        style: body(12, weight: FontWeight.w900))),
                 Wrap(
                   spacing: 8,
-                  children: banners.map((path) => ChoiceChip(
-                    label: const Text('Choisir'),
-                    selected: banner == path,
-                    onSelected: (_) => setDialogState(() => banner = path),
-                  )).toList(),
+                  children: banners
+                      .map((path) => ChoiceChip(
+                            label: const Text('Choisir'),
+                            selected: banner == path,
+                            onSelected: (_) =>
+                                setDialogState(() => banner = path),
+                          ))
+                      .toList(),
                 ),
               ],
             ),
           ),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text('Annuler')),
+            TextButton(
+                onPressed: () => Navigator.pop(dialogContext),
+                child: const Text('Annuler')),
             FilledButton(
               onPressed: () {
                 final requestedUsername = usernameController.text.trim();
@@ -904,7 +945,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   }
                 }
                 _auth.updateProfile(
-                  displayName: nameController.text.trim().isEmpty ? user.displayName : nameController.text.trim(),
+                  displayName: nameController.text.trim().isEmpty
+                      ? user.displayName
+                      : nameController.text.trim(),
                   bio: bioController.text.trim(),
                   avatarUrl: avatar,
                   bannerUrl: banner,
@@ -935,22 +978,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextField(controller: referenceController, decoration: const InputDecoration(labelText: 'Référence')),
-              TextField(controller: textController, maxLines: 3, decoration: const InputDecoration(labelText: 'Texte du verset')),
-              TextField(controller: categoryController, decoration: const InputDecoration(labelText: 'Catégorie')),
+              TextField(
+                  controller: referenceController,
+                  decoration: const InputDecoration(labelText: 'Référence')),
+              TextField(
+                  controller: textController,
+                  maxLines: 3,
+                  decoration:
+                      const InputDecoration(labelText: 'Texte du verset')),
+              TextField(
+                  controller: categoryController,
+                  decoration: const InputDecoration(labelText: 'Catégorie')),
             ],
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text('Annuler')),
+          TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: const Text('Annuler')),
           FilledButton(
             onPressed: () {
-              if (referenceController.text.trim().isEmpty || textController.text.trim().isEmpty) return;
+              if (referenceController.text.trim().isEmpty ||
+                  textController.text.trim().isEmpty) {
+                return;
+              }
               setState(() {
                 _currentSavedVerses.add({
                   'reference': referenceController.text.trim(),
                   'text': textController.text.trim(),
-                  'category': categoryController.text.trim().isEmpty ? 'Favori' : categoryController.text.trim(),
+                  'category': categoryController.text.trim().isEmpty
+                      ? 'Favori'
+                      : categoryController.text.trim(),
                 });
               });
               Navigator.pop(dialogContext);
